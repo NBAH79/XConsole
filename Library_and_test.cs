@@ -322,7 +322,7 @@ namespace Test
     //and there are no such cases
     //so you can set a style for writing a text
     //color contains 4 bits of background color and 4 bits of foreground color
-    //0xBBBBFFFF
+    //0bBBBBFFFF
     //the frame contains attributes to draw a frame
     public class Style
     {
@@ -608,7 +608,7 @@ namespace Test
     //Viewport's Scroll is used to show the correct sprite
     //Every letter contains ASCII #220 '▄' and you only set it's color then.
     //The top half contains bground color and the bottom - foreground;
-    //0xBBBBFFFF turns vertical: the high part is at the top
+    //0bBBBBFFFF turns vertical: the high part is at the top
     public class Sprite : IHaveASurface, IHaveAViewport
     {
         protected Viewport view;
