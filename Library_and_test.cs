@@ -136,10 +136,10 @@ namespace Test
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct CURSOR_INFO
+        public struct CURSOR_INFO //the structure is 5 bytes. 
         {
             public UInt32 dwSize; //persentage 1-100 of height, 32bits for compatibility, not this structure size!
-            public bool bVisible;
+            public bool bVisible; //no info about it's length. May be there'd be safer to add 3 bytes to 8 bytes boundary
         }
 
         //functions ----------------------------------------------------------------------------
