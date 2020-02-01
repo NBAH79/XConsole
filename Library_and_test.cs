@@ -221,9 +221,9 @@ namespace Test
             return Encoding.ASCII.GetBytes(text);
         }
 
-        public static byte ColorConverter(byte textcolor, byte bgcolor)
+        public static byte ColorConverter(byte bgcolor, byte textcolor)
         {
-            return (byte)((textcolor & 0xF) << 4 + (bgcolor & 0xF));
+            return (byte)((bgcolor<<4) + (textcolor & 0xF));
         }
 
         public static byte ColorXor(byte high, byte low)
