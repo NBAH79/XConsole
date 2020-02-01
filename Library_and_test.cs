@@ -336,7 +336,7 @@ namespace Test
         }
         public Style(byte textcolor, byte bgcolor, bool _frame = false)
         {
-            color = XConsole.ColorConverter(textcolor, bgcolor);
+            color = XConsole.ColorConverter(bgcolor, textcolor);
             frame = _frame;
         }
     }
