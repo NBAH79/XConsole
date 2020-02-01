@@ -344,7 +344,7 @@ namespace Test
     {
         public XConsole.SMALL_COORD size;
         public XConsole.CHAR_INFO[] Buffer;
-        private int length;
+        private readonly int length;
 
         //virtual cursor if you want to write from the last position
         private int cursor_x;
@@ -454,7 +454,6 @@ namespace Test
             int maxlength = length - offset;
             int strlength = chars.Length;
             if (maxlength < strlength) strlength = maxlength;
-            ushort[] attr = new ushort[strlength--];
             for (int n = 0; n < strlength; n++) Buffer[offset + n].UnicodeChar = chars[n];
             cursor_x += strlength;
             cursor_y += cursor_x / size.x;
