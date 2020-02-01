@@ -334,7 +334,7 @@ namespace Test
             color = 7;
             frame = false;
         }
-        public Style(byte textcolor, byte bgcolor, bool _frame = false)
+        public Style(byte bgcolor, byte textcolor, bool _frame = false)
         {
             color = XConsole.ColorConverter(bgcolor, textcolor);
             frame = _frame;
@@ -738,8 +738,8 @@ namespace Test
             Window.Initialize(129,59,"XConsole",pal);
 
             //a pair of styles
-            Style s = new Style(4, 1, true);
-            Style s2 = new Style(13, 0, true);
+            Style s = new Style(1, 4, true);
+            Style s2 = new Style(0, 13, true);
  
             //separate surface ans viewport
             Surface simpletext = new Surface(new XConsole.SMALL_COORD(64, 40));
