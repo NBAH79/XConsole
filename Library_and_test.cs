@@ -203,7 +203,7 @@ namespace Test
         public static unsafe bool SetCursor(IntPtr hConsoleOutput, bool visible)
         {
             CURSOR_INFO inf = new CURSOR_INFO();
-            inf.dwSize = 5;
+            inf.dwSize = 1;
             inf.bVisible = visible;
             IntPtr infptr = new IntPtr(&inf);
             return SetConsoleCursorInfo(hConsoleOutput, infptr);
@@ -267,28 +267,25 @@ namespace Test
         private bool cursor = false;
 
         //initializes the page simply
-        public unsafe int Initialize(bool _cursor = false)
+        public unsafe void Initialize(bool _cursor = false)
         {
             Handle = XConsole.CreateConsoleScreenBuffer(
                             XConsole.GENERIC_READ | XConsole.GENERIC_WRITE, XConsole.FILE_SHARE_READ | XConsole.FILE_SHARE_WRITE,
                             IntPtr.Zero, XConsole.CONSOLE_TEXTMODE_BUFFER, IntPtr.Zero); 
             XConsole.SetCursor(Handle, _cursor);
             cursor = _cursor;
-            return XConsole.GetLastError();
         }
 
         //initializes the page and sets the palette
-        public unsafe int Initialize(XConsole.PALETTE palette, bool _cursor = false)
+        public unsafe void Initialize(XConsole.PALETTE palette, bool _cursor = false)
         {
-            int err=Initialize(_cursor);
-            if (err!=0) return err;
+            Initialize(_cursor);
             XConsole.CONSOLE_SCREEN_BUFFER_INFO_EX sbi = new XConsole.CONSOLE_SCREEN_BUFFER_INFO_EX();
             sbi.cbSize = sizeof(XConsole.CONSOLE_SCREEN_BUFFER_INFO_EX);
             IntPtr sbiptr = new IntPtr(&sbi);
             XConsole.GetConsoleScreenBufferInfoEx(Handle, sbiptr);
             for (int n = 0; n < XConsole.PALETTE_SIZE; n++) sbi.Palette[n] = new XConsole.RGBXConverter(palette.rgbx[n]).UINT;
             XConsole.SetConsoleScreenBufferInfoEx(Handle, sbiptr);
-            return XConsole.GetLastError();
         }
 
         //draws a surface to the region marked as a viewport.
