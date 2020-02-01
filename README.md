@@ -1,4 +1,4 @@
-# XConsole
+# XConsole for .NET Core
 http://youtu.be/PO7To-Z8e10
 There you can see how it works.
 The file contains the library and it's test with comments.
