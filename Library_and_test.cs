@@ -138,7 +138,7 @@ namespace Test
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct CURSOR_INFO //the structure is 5 bytes. 
         {
-            public UInt32 dwSize; //persentage 1-100 of height, 32bits for compatibility, not this structure size!
+            public SMALL_COORD dwSize; 
             public bool bVisible; //no info about it's length. May be there'd be safer to add 3 bytes to 8 bytes boundary
         }
 
@@ -203,7 +203,8 @@ namespace Test
         public static unsafe bool SetCursor(IntPtr hConsoleOutput, bool visible)
         {
             CURSOR_INFO inf = new CURSOR_INFO();
-            inf.dwSize = 1;
+            inf.dwSize.x=0;
+            inf.dwSize.y=1;
             inf.bVisible = visible;
             IntPtr infptr = new IntPtr(&inf);
             return SetConsoleCursorInfo(hConsoleOutput, infptr);
