@@ -55,7 +55,7 @@ namespace Test
                 ASCIIChar = 0;
                 UnicodeChar = _char;
                 Attributes = attr;
-                Color = ColorConverter(textcolor, bgcolor);
+                Color = ColorConverter(bgcolor, textcolor);
             }
 
             //ASCII
@@ -64,7 +64,7 @@ namespace Test
                 UnicodeChar = 0;
                 ASCIIChar = _char;
                 Attributes = attr;
-                Color = ColorConverter(textcolor, bgcolor);
+                Color = ColorConverter(bgcolor, textcolor);
             }
         }
 
