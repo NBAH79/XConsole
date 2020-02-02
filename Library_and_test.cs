@@ -431,7 +431,7 @@ namespace Test
             }
             else for (int n = 0; n <= strlength; n++) attr[n] = 0;
             int offset = cursor_y * size.x + cursor_x;
-            for (int n = 0; n < strlength; n++) Buffer[offset + n] = new XConsole.CHAR_INFO(chars[n], attr[n], style.color);
+            for (int n = 0; n <= strlength; n++) Buffer[offset + n] = new XConsole.CHAR_INFO(chars[n], attr[n], style.color);
             cursor_y++;
         }
 
