@@ -392,56 +392,37 @@ namespace Test
             Buffer[length - 1] = temp;
         }
 
-        //Scroll line up
-        public void ScrollUp(int lines)
-        {
-            int distance = size.x * lines;
-            for (int n = 0; n < length - distance; n++) Buffer[n] = Buffer[n + distance];
-            for (int n = length - distance; n < length; n++) Buffer[n] = new XConsole.CHAR_INFO();
-        }
+        public void ScrollUp()
+    {
+        int position = length - size.x;
+        for (int n = 0; n < position; n++) Buffer[n] = Buffer[n + size.x];
+        for (int n = position; n < length; n++) Buffer[n] = new DOSConsole.CHAR_INFO();
+    }
 
-        //writes a text line. The next line starts from cursor_x
-        //if the text is longer than the buffer the text trims
-        //if the line is the last the buffer scrolls up
-        public void WriteLine(string text, Style style) { WriteLine(XConsole.EncodeASCII(text), style); }
-        public void WriteLine(byte[] chars)
+    public void WriteLine(string text, Style style) { WriteLine(DOSConsole.EncodeASCII(text), style); }
+    public void WriteLine(byte[] chars, Style style)
+    {
+        NewLine();
+        int strlength = chars.Length;
+        if (size.x < strlength) strlength = size.x;
+        byte[] attr = new byte[strlength--];
+        if (style.frame)
         {
-            if (cursor_y >= size.y) { ScrollUp(cursor_y - size.y + 1); cursor_y = size.y - 1; }
-            int maxlength = size.x - cursor_x;
-            int strlength = chars.Length;
-            if (maxlength < strlength) strlength = maxlength;
-            int offset = cursor_y * size.x + cursor_x;
-            for (int n = 0; n < strlength; n++) Buffer[offset + n].UnicodeChar = chars[n];
-            cursor_y++;
+            attr[0] = DOSConsole.ATTR_FRAME_TOP + DOSConsole.ATTR_FRAME_LEFT + DOSConsole.ATTR_FRAME_BOTTOM;
+            for (int n = 1; n < strlength; n++) attr[n] = DOSConsole.ATTR_FRAME_TOP + DOSConsole.ATTR_FRAME_BOTTOM;
+            attr[strlength] = DOSConsole.ATTR_FRAME_TOP + DOSConsole.ATTR_FRAME_RIGHT + DOSConsole.ATTR_FRAME_BOTTOM;
         }
+        else for (int n = 0; n <= strlength; n++) attr[n] = 0;
+        int offset = cursor_y * size.x;
+        for (int n = 0; n <= strlength; n++) Buffer[offset + n] = new DOSConsole.CHAR_INFO(chars[n], attr[n], style.color);
+    }
 
-        //writes a styled line
-        public void WriteLine(byte[] chars, Style style)
-        {
-            if (cursor_y >= size.y) { ScrollUp(cursor_y - size.y + 1); cursor_y = size.y - 1; }
-            int maxlength = size.x - cursor_x;
-            int strlength = chars.Length;
-            if (maxlength < strlength) strlength = maxlength;
-            byte[] attr = new byte[strlength--];
-            if (style.frame)
-            {
-                attr[0] = XConsole.ATTR_FRAME_TOP + XConsole.ATTR_FRAME_LEFT + XConsole.ATTR_FRAME_BOTTOM;
-                for (int n = 1; n < strlength; n++) attr[n] = XConsole.ATTR_FRAME_TOP + XConsole.ATTR_FRAME_BOTTOM;
-                attr[strlength] = XConsole.ATTR_FRAME_TOP + XConsole.ATTR_FRAME_RIGHT + XConsole.ATTR_FRAME_BOTTOM;
-            }
-            else for (int n = 0; n <= strlength; n++) attr[n] = 0;
-            int offset = cursor_y * size.x + cursor_x;
-            for (int n = 0; n <= strlength; n++) Buffer[offset + n] = new XConsole.CHAR_INFO(chars[n], attr[n], style.color);
-            cursor_y++;
-        }
-
-        //returns the virtual cursor
-        public void NewLine()
-        {
-            cursor_y++;
-            if (cursor_y >= size.y) { ScrollUp(cursor_y - size.y + 1); cursor_y = size.y - 1; }
-            cursor_x = 0;
-        }
+    public void NewLine()
+    {
+        if (cursor_y < size.y-1) cursor_y++; 
+        else ScrollUp();
+        cursor_x = 0;
+    }
 
         //writes a text. If the text is longer than a buffer it trims.
         //no scroll. The cursor position is at the end of the line or out of the limits
